@@ -9,12 +9,12 @@ import SwiftUI
 
 struct ContentView: View {
     
-    @ObservedObject var fetchedData = ApiManager()
+    @ObservedObject var apiManager = ApiManager()
     
     var body: some View {
         NavigationView{
 
-            List(fetchedData.getOrders()){ order in
+            List(apiManager.orders){ order in
 
                 NavigationLink(
 
@@ -26,6 +26,8 @@ struct ContentView: View {
                 .navigationTitle("Order List")
                 .navigationBarTitleDisplayMode(.inline)
 
+            }.onAppear() {
+                apiManager.getOrders()
             }
         }
     }
@@ -47,6 +49,11 @@ struct AddressView: View {
     }
     
     var body: some View {
-        Text(orderData.getOrderById(orderId: orderId).shipName)
+        VStack{
+            Text(orderData.order.shipName)
+        }
+        .onAppear(){
+            orderData.getOrderById(orderId: orderId)
+        }
     }
 }
